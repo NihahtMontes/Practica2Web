@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Proyecto 2 - CRUD EF Core";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-xl-10">
+        <div class="text-center mb-5 pb-3">
+            <h1 class="display-3 fw-bold text-primary mb-3">Proyecto 2: Relaciones EF Core</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 800px;">
+                Implementación de relaciones avanzadas con Entity Framework Core, navegabilidad fluida y carga de datos eficiente.
+            </p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <!-- 1:1 Card -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-up">
+                    <div class="card-body p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white rounded-3 mb-4 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="bi bi-person-check-fill fs-2"></i>
+                        </div>
+                        <h3 class="fw-bold fs-4">Relación 1:1</h3>
+                        <p class="text-muted">Gestión de <strong>Usuarios</strong> y <strong>Perfiles</strong> con carga obligatoria mediante <code class="bg-light px-2 py-1 rounded">.Include()</code> y formularios combinados.</p>
+                        <a asp-controller="Usuarios" asp-action="Index" class="btn btn-outline-primary mt-auto">Explorar Usuarios</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1:N Card -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-up">
+                    <div class="card-body p-4">
+                        <div class="feature-icon bg-success bg-gradient text-white rounded-3 mb-4 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="bi bi-box-seam-fill fs-2"></i>
+                        </div>
+                        <h3 class="fw-bold fs-4">Relación 1:N</h3>
+                        <p class="text-muted">Procesamiento de <strong>Clientes</strong> y sus <strong>Pedidos</strong> con cálculo automático de totales e historial completo de transacciones.</p>
+                        <a asp-controller="Clientes" asp-action="Index" class="btn btn-outline-success mt-auto">Explorar Clientes</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- N:M Card -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-up">
+                    <div class="card-body p-4">
+                        <div class="feature-icon bg-dark bg-gradient text-white rounded-3 mb-4 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="bi bi-mortarboard-fill fs-2"></i>
+                        </div>
+                        <h3 class="fw-bold fs-4">Relación N:M</h3>
+                        <p class="text-muted">Inscripción avanzada de <strong>Estudiantes</strong> en <strong>Cursos</strong> mediante una tabla intermedia con metadatos personalizados.</p>
+                        <a asp-controller="Estudiantes" asp-action="Index" class="btn btn-outline-dark mt-auto">Explorar Académico</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5 pt-4 text-center">
+            <div class="alert alert-secondary d-inline-block border-0 shadow-sm px-5 rounded-pill">
+                <i class="bi bi-lightning-charge-fill text-warning me-2"></i>
+                <small class="fw-bold text-uppercase tracking-wider">Sistema construido con Entity Framework Core 10.0 + ASP.NET MVC</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-up {
+        transition: transform 0.3s ease, shadow 0.3s ease;
+    }
+    .hover-up:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.15)!important;
+    }
+    .tracking-wider {
+        letter-spacing: 0.1em;
+    }
+</style>

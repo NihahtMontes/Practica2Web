@@ -1,0 +1,93 @@
+@model practica2Web.Models.Estudiante
+
+@{
+    ViewData["Title"] = "Detalles del Estudiante";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card shadow border-0 mb-4 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white py-4 text-center">
+                    <i class="bi bi-person-bounding-box display-4"></i>
+                    <h5 class="mt-3 mb-0">@Model.Nombre</h5>
+                    <p class="mb-0 opacity-75">@Model.Carrera</p>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Inscripciones" asp-action="Create" asp-route-estudianteId="@Model.Id" class="btn btn-primary">
+                            <i class="bi bi-journal-plus"></i> Inscribir en Curso
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">
+                            <i class="bi bi-pencil"></i> Editar Datos
+                        </a>
+                        <a asp-action="Index" class="btn btn-link text-muted">Atrás a la lista</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-secondary"><i class="bi bi-journals"></i> Cursos Inscritos</h5>
+                    <span class="badge bg-primary rounded-pill">Total: @Model.Inscripciones.Count</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr class="table-light">
+                                    <th class="ps-4">Curso</th>
+                                    <th>Fecha Inscripción</th>
+                                    <th>Estado</th>
+                                    <th class="text-end pe-4">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var insc in Model.Inscripciones)
+                                {
+                                    <tr>
+                                        <td class="ps-4 border-start border-4 @(insc.Estado == "Activo" ? "border-success" : "border-warning")">
+                                            <div class="fw-bold">@insc.Curso.Nombre</div>
+                                            <div class="small text-muted">@insc.Curso.Creditos Créditos</div>
+                                        </td>
+                                        <td>@insc.FechaInscripcion.ToShortDateString()</td>
+                                        <td>
+                                            <span class="badge @(insc.Estado == "Activo" ? "bg-success-subtle text-success" : "bg-warning-subtle text-warning") px-3">
+                                                @insc.Estado
+                                            </span>
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <form asp-controller="Inscripciones" asp-action="Delete" method="post" class="d-inline">
+                                                <input type="hidden" name="estudianteId" value="@insc.EstudianteId" />
+                                                <input type="hidden" name="cursoId" value="@insc.CursoId" />
+                                                <button type="submit" class="btn btn-link text-danger p-0" onclick="return confirm('¿Retirar al estudiante del curso?')">
+                                                    <i class="bi bi-x-circle-fill"></i> Retirar
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (!Model.Inscripciones.Any())
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center py-5 text-muted">
+                                            <i class="bi bi-info-circle me-1"></i> No tiene inscripciones activas
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    }
+</style>

@@ -1,0 +1,62 @@
+@model practica2Web.Models.Inscripcion
+
+@{
+    ViewData["Title"] = "Nueva Inscripción";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow border-0">
+            <div class="card-header bg-gradient-dark text-white text-center py-4">
+                <h4 class="mb-0"><i class="bi bi-journal-plus"></i> Inscripción de Estudiante</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="EstudianteId" class="form-label fw-semibold">Estudiante</label>
+                        <select asp-for="EstudianteId" class="form-select" asp-items="ViewBag.EstudianteId"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CursoId" class="form-label fw-semibold">Curso</label>
+                        <select asp-for="CursoId" class="form-select" asp-items="ViewBag.CursoId"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="FechaInscripcion" class="form-label fw-semibold">Fecha de Inscripción</label>
+                        <input asp-for="FechaInscripcion" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="FechaInscripcion" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Estado" class="form-label fw-semibold">Estado</label>
+                        <select asp-for="Estado" class="form-select">
+                            <option value="Activo">Activo</option>
+                            <option value="Completado">Completado</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Retirado">Retirado</option>
+                        </select>
+                        <span asp-validation-for="Estado" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-dark btn-lg"><i class="bi bi-save"></i> Registrar Inscripción</button>
+                        <a asp-controller="Estudiantes" asp-action="Index" class="btn btn-link text-muted">Atrás a la lista</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-dark {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

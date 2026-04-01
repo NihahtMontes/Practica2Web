@@ -1,0 +1,47 @@
+@model practica2Web.Models.Estudiante
+
+@{
+    ViewData["Title"] = "Nuevo Estudiante";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow border-0">
+            <div class="card-header bg-gradient-success text-white text-center py-4">
+                <h4 class="mb-0"><i class="bi bi-person-plus-fill"></i> Registar Estudiante</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label fw-semibold"></label>
+                        <input asp-for="Nombre" class="form-control" placeholder="Nombre completo" />
+                        <span asp-validation-for="Nombre" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Carrera" class="form-label fw-semibold"></label>
+                        <input asp-for="Carrera" class="form-control" placeholder="Carrera universitaria" />
+                        <span asp-validation-for="Carrera" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-save"></i> Guardar Estudiante</button>
+                        <a asp-action="Index" class="btn btn-link text-muted">Cancelar y Volver</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #1cc88a 0%, #17a673 100%);
+    }
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
