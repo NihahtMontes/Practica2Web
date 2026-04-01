@@ -45,6 +45,7 @@ namespace practica2Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Email")] Cliente cliente)
         {
+            Console.WriteLine("ENTRÓ AL POST"); // 👈 agrega esto
             if (ModelState.IsValid)
             {
                 _context.Add(cliente);

@@ -15,63 +15,59 @@ namespace practica2Web.Controllers
             _context = context;
         }
 
+        // 🔥 ESTO TE FALTABA
         // GET: Pedidos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Pedidos.Include(p => p.Cliente).ToListAsync());
+            var pedidos = await _context.Pedidos
+                .Include(p => p.Cliente)
+                .ToListAsync();
+
+            return View(pedidos);
         }
 
         // GET: Pedidos/Create
         public IActionResult Create(int? clienteId)
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre", clienteId);
+            ViewBag.ClienteId = new SelectList(_context.Clientes, "Id", "Nombre", clienteId);
             return View();
         }
 
         // POST: Pedidos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FechaPedido,Total,ClienteId")] Pedido pedido)
+        public async Task<IActionResult> Create(Pedido pedido)
         {
+            // 🔥 LIMPIAR VALIDACIONES AUTOMÁTICAS
+            ModelState.Clear();
+
+            // =========================
+            // ✅ VALIDACIONES MANUALES
+            // =========================
+
+            if (pedido.ClienteId <= 0)
+                ModelState.AddModelError("ClienteId", "Debes seleccionar un cliente");
+
+            if (pedido.FechaPedido == default)
+                ModelState.AddModelError("FechaPedido", "La fecha es obligatoria");
+            else if (pedido.FechaPedido > DateTime.Now)
+                ModelState.AddModelError("FechaPedido", "La fecha no puede ser futura");
+
+            if (pedido.Total <= 0)
+                ModelState.AddModelError("Total", "El total debe ser mayor a 0");
+
+            // =========================
+
             if (ModelState.IsValid)
             {
-                // Requisito: Calcular automáticamente el total
-                // In a real scenario, this would be based on line items.
-                // For this exercise, we will just ensure it's not null and we'll simulate logic if needed
-                // E.g. if we have a default price per order
-                if (pedido.Total <= 0) pedido.Total = 150.00m; // Default simulated value
-                
                 _context.Add(pedido);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), "Clientes", new { id = pedido.Id });
+
+                return RedirectToAction("Details", "Clientes", new { id = pedido.ClienteId });
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nombre", pedido.ClienteId);
+
+            ViewBag.ClienteId = new SelectList(_context.Clientes, "Id", "Nombre", pedido.ClienteId);
             return View(pedido);
-        }
-
-        // GET: Pedidos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var pedido = await _context.Pedidos.Include(p => p.Cliente).FirstOrDefaultAsync(m => m.Id == id);
-            if (pedido == null) return NotFound();
-
-            return View(pedido);
-        }
-
-        // POST: Pedidos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var pedido = await _context.Pedidos.FindAsync(id);
-            if (pedido != null)
-            {
-                _context.Pedidos.Remove(pedido);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction(nameof(Index), "Clientes", new { id = pedido?.ClienteId });
         }
     }
 }

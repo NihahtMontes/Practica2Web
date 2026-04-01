@@ -12,8 +12,8 @@ using practica2Web.Data;
 namespace practica2Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260401184743_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260401222041_zero")]
+    partial class zero
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,7 +39,8 @@ namespace practica2Web.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -76,7 +77,8 @@ namespace practica2Web.Migrations
 
                     b.Property<string>("Carrera")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()

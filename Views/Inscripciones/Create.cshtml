@@ -8,55 +8,71 @@
     <div class="col-md-5">
         <div class="card shadow border-0">
             <div class="card-header bg-gradient-dark text-white text-center py-4">
-                <h4 class="mb-0"><i class="bi bi-journal-plus"></i> Inscripción de Estudiante</h4>
+                <h4 class="mb-0">Inscripción de Estudiante</h4>
             </div>
             <div class="card-body p-4">
-                <form asp-action="Create">
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
+                <!-- 🔥 IMPORTANTE -->
+                <form asp-action="Create" method="post">
+
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <!-- ESTUDIANTE -->
                     <div class="mb-3">
-                        <label asp-for="EstudianteId" class="form-label fw-semibold">Estudiante</label>
-                        <select asp-for="EstudianteId" class="form-select" asp-items="ViewBag.EstudianteId"></select>
+                        <label class="form-label">Estudiante</label>
+                        <select asp-for="EstudianteId" class="form-select">
+                            <option value="">-- Seleccionar estudiante --</option>
+                            @foreach (var e in ViewBag.EstudianteId)
+                            {
+                                <option value="@e.Value">@e.Text</option>
+                            }
+                        </select>
+                        <span asp-validation-for="EstudianteId" class="text-danger"></span>
                     </div>
 
+                    <!-- CURSO -->
                     <div class="mb-3">
-                        <label asp-for="CursoId" class="form-label fw-semibold">Curso</label>
-                        <select asp-for="CursoId" class="form-select" asp-items="ViewBag.CursoId"></select>
+                        <label class="form-label">Curso</label>
+                        <select asp-for="CursoId" class="form-select">
+                            <option value="">-- Seleccionar curso --</option>
+                            @foreach (var c in ViewBag.CursoId)
+                            {
+                                <option value="@c.Value">@c.Text</option>
+                            }
+                        </select>
+                        <span asp-validation-for="CursoId" class="text-danger"></span>
                     </div>
 
+                    <!-- FECHA -->
                     <div class="mb-3">
-                        <label asp-for="FechaInscripcion" class="form-label fw-semibold">Fecha de Inscripción</label>
-                        <input asp-for="FechaInscripcion" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                        <span asp-validation-for="FechaInscripcion" class="text-danger small"></span>
+                        <label asp-for="FechaInscripcion"></label>
+                        <input asp-for="FechaInscripcion" class="form-control" type="date" />
+                        <span asp-validation-for="FechaInscripcion" class="text-danger"></span>
                     </div>
 
+                    <!-- ESTADO -->
                     <div class="mb-3">
-                        <label asp-for="Estado" class="form-label fw-semibold">Estado</label>
+                        <label asp-for="Estado"></label>
                         <select asp-for="Estado" class="form-select">
+                            <option value="">-- Seleccionar --</option>
                             <option value="Activo">Activo</option>
                             <option value="Completado">Completado</option>
                             <option value="Pendiente">Pendiente</option>
-                            <option value="Retirado">Retirado</option>
                         </select>
-                        <span asp-validation-for="Estado" class="text-danger small"></span>
+                        <span asp-validation-for="Estado" class="text-danger"></span>
                     </div>
 
-                    <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-dark btn-lg"><i class="bi bi-save"></i> Registrar Inscripción</button>
-                        <a asp-controller="Estudiantes" asp-action="Index" class="btn btn-link text-muted">Atrás a la lista</a>
-                    </div>
+                    <button type="submit" class="btn btn-dark w-100">Guardar</button>
+
                 </form>
+
             </div>
         </div>
     </div>
 </div>
 
-<style>
-    .bg-gradient-dark {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    }
-</style>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

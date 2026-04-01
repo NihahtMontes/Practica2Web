@@ -17,20 +17,22 @@ namespace practica2Web.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // 1:1 Relationship (Usuario - Perfil) - Mandatory
+            base.OnModelCreating(modelBuilder);
+
+            // 🔹 1:1 Usuario - Perfil (obligatorio)
             modelBuilder.Entity<Usuario>()
                 .HasOne(u => u.Perfil)
                 .WithOne(p => p.Usuario)
-                .HasForeignKey<Perfil>(p => p.UsuarioId)
-                .IsRequired(); // Make it mandatory
+                .HasForeignKey<Perfil>(p => p.UsuarioId);
+                
 
-            // 1:N Relationship (Cliente - Pedido)
+            // 🔹 1:N Cliente - Pedido
             modelBuilder.Entity<Cliente>()
                 .HasMany(c => c.Pedidos)
                 .WithOne(p => p.Cliente)
                 .HasForeignKey(p => p.ClienteId);
 
-            // N:M Relationship (Estudiante - Curso) via Inscripcion
+            // 🔹 N:M Estudiante - Curso (Inscripcion)
             modelBuilder.Entity<Inscripcion>()
                 .HasKey(i => new { i.EstudianteId, i.CursoId });
 
