@@ -1,57 +1,214 @@
 <!DOCTYPE html>
-<html lang="en">
+<html dir="ltr" lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - practica2Web</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Proyecto 2 - CRUD con Relaciones Avanzadas EF Core">
+    <title>@ViewData["Title"] - Proyecto 2</title>
+    <!-- Nice Admin CSS -->
+    <link href="~/nice-admin/dist/css/style.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/practica2Web.styles.css" asp-append-version="true" />
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3 shadow">
-            <div class="container">
-                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">PROYECTO 2</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Usuarios" asp-action="Index"><i class="bi bi-people"></i> Usuarios</a>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header -->
+        <!-- ============================================================== -->
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header">
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
+                        <i class="ti-menu ti-close"></i>
+                    </a>
+                    <div class="navbar-brand">
+                        <a asp-controller="Home" asp-action="Index" class="logo">
+                            <b class="logo-icon">
+                                <span style="font-size:22px; font-weight:900; color:#fff;">P2</span>
+                            </b>
+                            <span class="logo-text">
+                                <span style="font-size:16px; font-weight:700; color:#fff;">Proyecto 2</span>
+                            </span>
+                        </a>
+                        <a class="sidebartoggler d-none d-md-block" href="javascript:void(0)" data-sidebartype="mini-sidebar">
+                            <i class="mdi mdi-toggle-switch mdi-toggle-switch-off font-20"></i>
+                        </a>
+                    </div>
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                       data-toggle="collapse" data-target="#navbarSupportedContent"
+                       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="ti-more"></i>
+                    </a>
+                </div>
+
+                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav float-left mr-auto">
+                        <li class="nav-item search-box">
+                            <a class="nav-link waves-effect waves-dark" href="javascript:void(0)">
+                                <div class="d-flex align-items-center">
+                                    <i class="mdi mdi-magnify font-20 mr-1"></i>
+                                    <span class="d-none d-sm-block">Buscar</span>
+                                </div>
+                            </a>
+                            <form class="app-search position-absolute">
+                                <input type="text" class="form-control" placeholder="Buscar...">
+                                <a class="srh-btn"><i class="ti-close"></i></a>
+                            </form>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Clientes" asp-action="Index"><i class="bi bi-person-vcard"></i> Clientes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Estudiantes" asp-action="Index"><i class="bi bi-mortarboard"></i> Estudiantes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Cursos" asp-action="Index"><i class="bi bi-book"></i> Cursos</a>
+                    </ul>
+
+                    <ul class="navbar-nav float-right">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark pro-pic" href=""
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="mdi mdi-account-circle font-24"></i>
+                                <span class="m-l-5 font-medium d-none d-sm-inline-block">Admin <i class="mdi mdi-chevron-down"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
+                                <span class="with-arrow"><span class="bg-primary"></span></span>
+                                <div class="d-flex no-block align-items-center p-15 bg-primary text-white m-b-10">
+                                    <div><i class="mdi mdi-account-circle" style="font-size:50px;"></i></div>
+                                    <div class="m-l-10">
+                                        <h4 class="m-b-0">Administrador</h4>
+                                        <p class="m-b-0">admin@proyecto2.com</p>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+            </nav>
+        </header>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - practica2Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <!-- ============================================================== -->
+        <!-- Left Sidebar -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar">
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="nav-small-cap">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                            <span class="hide-menu">NAVEGACIÓN</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Home" asp-action="Index" aria-expanded="false">
+                                <i class="mdi mdi-home"></i>
+                                <span class="hide-menu">Inicio</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-small-cap">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                            <span class="hide-menu">RELACIÓN 1:1</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Usuarios" asp-action="Index" aria-expanded="false">
+                                <i class="mdi mdi-account-multiple"></i>
+                                <span class="hide-menu">Usuarios</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-small-cap">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                            <span class="hide-menu">RELACIÓN 1:N</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Clientes" asp-action="Index" aria-expanded="false">
+                                <i class="mdi mdi-account-card-details"></i>
+                                <span class="hide-menu">Clientes</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Pedidos" asp-action="Index" aria-expanded="false">
+                                <i class="mdi mdi-cart"></i>
+                                <span class="hide-menu">Pedidos</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-small-cap">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                            <span class="hide-menu">RELACIÓN N:M</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Estudiantes" asp-action="Index" aria-expanded="false">
+                                <i class="mdi mdi-school"></i>
+                                <span class="hide-menu">Estudiantes</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Cursos" asp-action="Index" aria-expanded="false">
+                                <i class="mdi mdi-book-open-page-variant"></i>
+                                <span class="hide-menu">Cursos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- ============================================================== -->
+        <!-- Page wrapper -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- Breadcrumb -->
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-5 align-self-center">
+                        <h4 class="page-title">@ViewData["Title"]</h4>
+                    </div>
+                    <div class="col-7 align-self-center">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a asp-controller="Home" asp-action="Index">Inicio</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Container fluid -->
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer text-center">
+                Proyecto 2 &copy; @DateTime.Now.Year — CRUD con Relaciones Avanzadas EF Core
+            </footer>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+        <!-- End Page wrapper -->
+    </div>
+    <!-- End Main wrapper -->
+
+    <!-- ============================================================== -->
+    <!-- Scripts -->
+    <!-- ============================================================== -->
+    <script src="~/nice-admin/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/nice-admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="~/nice-admin/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/nice-admin/dist/js/app.min.js"></script>
+    <script src="~/nice-admin/dist/js/app.init.js"></script>
+    <script src="~/nice-admin/dist/js/app-style-switcher.js"></script>
+    <script src="~/nice-admin/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/nice-admin/dist/js/waves.js"></script>
+    <script src="~/nice-admin/dist/js/sidebarmenu.js"></script>
+    <script src="~/nice-admin/dist/js/custom.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

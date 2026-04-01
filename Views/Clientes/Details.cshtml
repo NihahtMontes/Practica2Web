@@ -1,71 +1,92 @@
 @model practica2Web.Models.Cliente
-
 @{
     ViewData["Title"] = "Historial de Pedidos";
 }
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-lg-4 mb-4">
-            <div class="card shadow border-0 h-100">
-                <div class="card-header bg-primary text-white py-3">
-                    <h5 class="mb-0"><i class="bi bi-person-circle"></i> Perfil del Cliente</h5>
+<div class="row">
+    <!-- Cliente info -->
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body text-center p-4">
+                <div class="mb-3" style="color:#26c6da; font-size:64px;">
+                    <i class="mdi mdi-account-circle"></i>
                 </div>
-                <div class="card-body">
-                    <h4 class="fw-bold mb-3">@Model.Nombre</h4>
-                    <p class="mb-1 text-muted"><i class="bi bi-envelope"></i> @Model.Email</p>
-                    <hr>
-                    <div class="d-grid gap-2">
-                        <a asp-controller="Pedidos" asp-action="Create" asp-route-clienteId="@Model.Id" class="btn btn-success">
-                            <i class="bi bi-plus-circle"></i> Nuevo Pedido
-                        </a>
-                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-info">
-                            <i class="bi bi-pencil-square"></i> Editar Cliente
-                        </a>
-                        <a asp-action="Index" class="btn btn-link text-muted">Atrás a la lista</a>
-                    </div>
-                </div>
+                <h4 class="font-weight-bold mb-1">@Model.Nombre</h4>
+                <p class="text-muted mb-3">@Model.Email</p>
+                <hr>
+                <a asp-controller="Pedidos" asp-action="Create" asp-route-clienteId="@Model.Id"
+                   class="btn btn-block btn-rounded waves-effect mb-2" style="background:#26c6da; color:#fff;">
+                    <i class="mdi mdi-cart-plus"></i> Nuevo Pedido
+                </a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-block btn-rounded waves-effect text-white mb-2">
+                    <i class="mdi mdi-pencil"></i> Editar Cliente
+                </a>
+                <a asp-action="Index" class="btn btn-light btn-block btn-rounded waves-effect">
+                    <i class="mdi mdi-arrow-left"></i> Volver
+                </a>
             </div>
         </div>
+    </div>
 
-        <div class="col-lg-8">
-            <div class="card shadow border-0">
-                <div class="card-header bg-light py-3">
-                    <h5 class="mb-0 text-secondary"><i class="bi bi-receipt"></i> Historial de Pedidos</h5>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead>
-                                <tr class="table-light">
-                                    <th class="ps-4">Pedido #</th>
-                                    <th>Fecha</th>
-                                    <th>Total</th>
-                                    <th class="text-end pe-4">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+    <!-- Historial de pedidos -->
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="card-title mb-0">
+                    <i class="mdi mdi-receipt text-info mr-2"></i> Historial de Pedidos
+                </h4>
+                <span class="badge badge-info badge-pill">@Model.Pedidos?.Count() pedidos</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Pedido #</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Pedidos != null && Model.Pedidos.Any())
+                            {
                                 @foreach (var pedido in Model.Pedidos.OrderByDescending(p => p.FechaPedido))
                                 {
                                     <tr>
-                                        <td class="ps-4 fw-bold text-primary">ORD-@pedido.Id.ToString("D4")</td>
+                                        <td><span class="badge badge-primary">ORD-@pedido.Id.ToString("D4")</span></td>
                                         <td>@pedido.FechaPedido.ToShortDateString()</td>
-                                        <td>$@pedido.Total.ToString("N2")</td>
-                                        <td class="text-end pe-4">
-                                            <a asp-controller="Pedidos" asp-action="Delete" asp-route-id="@pedido.Id" class="btn btn-link text-danger p-0" title="Eliminar Pedido">
-                                                <i class="bi bi-trash"></i>
-                                            </td>
-                                        </tr>
-                                    }
-                                    @if (!Model.Pedidos.Any())
-                                    {
-                                        <tr>
-                                            <td colspan="4" class="text-center py-5 text-muted">Este cliente no tiene pedidos registrados</td>
-                                        </tr>
-                                    }
-                            </tbody>
-                        </table>
-                    </div>
+                                        <td><strong class="text-success">$@pedido.Total.ToString("N2")</strong></td>
+                                        <td class="text-center">
+                                            <a asp-controller="Pedidos" asp-action="Delete" asp-route-id="@pedido.Id"
+                                               class="btn btn-danger btn-sm btn-rounded waves-effect"
+                                               onclick="return confirm('¿Eliminar este pedido?')">
+                                                <i class="mdi mdi-delete"></i> Eliminar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">
+                                        <i class="mdi mdi-cart-off font-24"></i><br>Sin pedidos registrados
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        @if (Model.Pedidos != null && Model.Pedidos.Any())
+                        {
+                            <tfoot>
+                                <tr class="table-dark">
+                                    <td colspan="2"><strong>TOTAL ACUMULADO</strong></td>
+                                    <td><strong class="text-success font-18">$@Model.Pedidos.Sum(p => p.Total).ToString("N2")</strong></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        }
+                    </table>
                 </div>
             </div>
         </div>
