@@ -7,7 +7,9 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="card-title mb-0"><i class="mdi mdi-account-multiple text-info mr-2"></i> Lista de Usuarios</h4>
+                <h4 class="card-title mb-0">
+                    <i class="mdi mdi-account-multiple mr-2 text-info"></i> Lista de Usuarios
+                </h4>
                 <a asp-action="Create" class="btn btn-info btn-rounded waves-effect waves-light">
                     <i class="mdi mdi-account-plus"></i> Nuevo Usuario
                 </a>
@@ -15,32 +17,34 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">
-                        <thead class="thead-dark">
+                        <thead>
                             <tr>
-                                <th>#</th>
+                                <th style="width:50px;">#</th>
                                 <th>Nombre</th>
                                 <th>Email</th>
                                 <th>Dirección</th>
                                 <th>Teléfono</th>
-                                <th>Nacimiento</th>
-                                <th class="text-center">Acciones</th>
+                                <th style="width:110px; text-align:center;">Nacimiento</th>
+                                <th class="text-center" style="width:120px;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@item.Id</td>
+                                    <td class="text-primary font-weight-bold">@item.Id</td>
                                     <td><strong>@item.Nombre</strong></td>
                                     <td>@item.Email</td>
                                     <td>@item.Perfil?.Direccion</td>
                                     <td>@item.Perfil?.Telefono</td>
-                                    <td>@item.Perfil?.FechaNacimiento.ToShortDateString()</td>
+                                    <td class="text-center">@item.Perfil?.FechaNacimiento.ToShortDateString()</td>
                                     <td class="text-center">
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm btn-rounded waves-effect" title="Editar">
+                                        <a asp-action="Edit" asp-route-id="@item.Id"
+                                           class="btn btn-warning btn-sm btn-rounded waves-effect" title="Editar">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
-                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-rounded waves-effect" title="Eliminar">
+                                        <a asp-action="Delete" asp-route-id="@item.Id"
+                                           class="btn btn-danger btn-sm btn-rounded waves-effect" title="Eliminar">
                                             <i class="mdi mdi-delete"></i>
                                         </a>
                                     </td>
@@ -50,7 +54,8 @@
                             {
                                 <tr>
                                     <td colspan="7" class="text-center py-4 text-muted">
-                                        <i class="mdi mdi-information-outline font-24"></i><br>No hay usuarios registrados
+                                        <i class="mdi mdi-account-off" style="font-size:32px; display:block; margin-bottom:8px;"></i>
+                                        No hay usuarios registrados
                                     </td>
                                 </tr>
                             }
