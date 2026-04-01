@@ -6,83 +6,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Proyecto 2 - CRUD con Relaciones Avanzadas EF Core">
     <title>@ViewData["Title"] - Proyecto 2</title>
-    <!-- Nice Admin CSS -->
-    <link href="~/nice-admin/dist/css/style.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Bootstrap 4 CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- Material Design Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.3.67/css/materialdesignicons.min.css">
+    <!-- Nice-Admin style (custom) -->
+    <link rel="stylesheet" href="~/css/nice-admin.css" asp-append-version="true">
 </head>
 
 <body>
     <!-- Preloader -->
-    <div class="preloader">
-        <div class="lds-ripple">
-            <div class="lds-pos"></div>
-            <div class="lds-pos"></div>
+    <div class="preloader" id="preloader">
+        <div style="text-align:center">
+            <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;">
+                <span class="sr-only">Cargando...</span>
+            </div>
         </div>
     </div>
 
-    <div id="main-wrapper">
-        <!-- ============================================================== -->
-        <!-- Topbar header -->
-        <!-- ============================================================== -->
+    <div id="main-wrapper" data-sidebartype="full">
+        <!-- ========== TOPBAR ========== -->
         <header class="topbar">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header">
-                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
-                        <i class="ti-menu ti-close"></i>
+                    <!-- Mobile toggle -->
+                    <a class="nav-toggler d-block d-md-none" href="javascript:void(0)" id="mobile-sidebar-toggle">
+                        <i class="mdi mdi-menu"></i>
                     </a>
+                    <!-- Logo -->
                     <div class="navbar-brand">
                         <a asp-controller="Home" asp-action="Index" class="logo">
-                            <b class="logo-icon">
-                                <span style="font-size:22px; font-weight:900; color:#fff;">P2</span>
-                            </b>
-                            <span class="logo-text">
-                                <span style="font-size:16px; font-weight:700; color:#fff;">Proyecto 2</span>
-                            </span>
+                            <b class="logo-icon">P2</b>
+                            <span class="logo-text">Proyecto 2</span>
                         </a>
-                        <a class="sidebartoggler d-none d-md-block" href="javascript:void(0)" data-sidebartype="mini-sidebar">
-                            <i class="mdi mdi-toggle-switch mdi-toggle-switch-off font-20"></i>
+                        <a class="sidebartoggler d-none d-md-inline-flex" href="javascript:void(0)" id="sidebar-toggle" title="Colapsar menú">
+                            <i class="mdi mdi-menu" style="color:rgba(255,255,255,.8); font-size:22px; line-height:1;"></i>
                         </a>
                     </div>
-                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
-                       data-toggle="collapse" data-target="#navbarSupportedContent"
-                       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="ti-more"></i>
+                    <!-- Mobile right toggle -->
+                    <a class="topbartoggler d-block d-md-none" href="javascript:void(0)"
+                       data-toggle="collapse" data-target="#navbarTop">
+                        <i class="mdi mdi-dots-vertical" style="color:#fff; font-size:22px;"></i>
                     </a>
                 </div>
 
-                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                <div class="navbar-collapse collapse" id="navbarTop">
                     <ul class="navbar-nav float-left mr-auto">
-                        <li class="nav-item search-box">
-                            <a class="nav-link waves-effect waves-dark" href="javascript:void(0)">
-                                <div class="d-flex align-items-center">
-                                    <i class="mdi mdi-magnify font-20 mr-1"></i>
-                                    <span class="d-none d-sm-block">Buscar</span>
-                                </div>
-                            </a>
-                            <form class="app-search position-absolute">
-                                <input type="text" class="form-control" placeholder="Buscar...">
-                                <a class="srh-btn"><i class="ti-close"></i></a>
-                            </form>
+                        <li class="nav-item">
+                            <span class="nav-link d-none d-md-flex" style="color:rgba(255,255,255,.7); font-size:13px;">
+                                <i class="mdi mdi-view-dashboard mr-1"></i> Sistema CRUD — EF Core Relaciones
+                            </span>
                         </li>
                     </ul>
-
                     <ul class="navbar-nav float-right">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark pro-pic" href=""
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="mdi mdi-account-circle font-24"></i>
-                                <span class="m-l-5 font-medium d-none d-sm-inline-block">Admin <i class="mdi mdi-chevron-down"></i></span>
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"
+                               style="color:#fff; display:flex; align-items:center; gap:6px;">
+                                <i class="mdi mdi-account-circle" style="font-size:26px;"></i>
+                                <span class="d-none d-sm-inline">Admin</span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                                <span class="with-arrow"><span class="bg-primary"></span></span>
-                                <div class="d-flex no-block align-items-center p-15 bg-primary text-white m-b-10">
-                                    <div><i class="mdi mdi-account-circle" style="font-size:50px;"></i></div>
-                                    <div class="m-l-10">
-                                        <h4 class="m-b-0">Administrador</h4>
-                                        <p class="m-b-0">admin@proyecto2.com</p>
+                            <div class="dropdown-menu dropdown-menu-right" style="border:none; box-shadow:0 5px 25px rgba(0,0,0,.12); border-radius:10px; min-width:200px;">
+                                <div class="d-flex align-items-center p-3" style="background:#1e88e5; border-radius:10px 10px 0 0;">
+                                    <i class="mdi mdi-account-circle" style="font-size:40px; color:#fff;"></i>
+                                    <div class="ml-2">
+                                        <div style="color:#fff; font-weight:700; font-size:14px;">Administrador</div>
+                                        <small style="color:rgba(255,255,255,.75);">admin@proyecto2.com</small>
                                     </div>
                                 </div>
+                                <div class="dropdown-divider m-0"></div>
+                                <a class="dropdown-item py-2" href="#"><i class="mdi mdi-cog mr-2 text-muted"></i> Configuración</a>
+                                <a class="dropdown-item py-2" href="#"><i class="mdi mdi-logout mr-2 text-muted"></i> Salir</a>
                             </div>
                         </li>
                     </ul>
@@ -90,64 +84,62 @@
             </nav>
         </header>
 
-        <!-- ============================================================== -->
-        <!-- Left Sidebar -->
-        <!-- ============================================================== -->
-        <aside class="left-sidebar">
+        <!-- ========== LEFT SIDEBAR ========== -->
+        <aside class="left-sidebar" id="left-sidebar">
             <div class="scroll-sidebar">
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li class="nav-small-cap">
                             <i class="mdi mdi-dots-horizontal"></i>
-                            <span class="hide-menu">NAVEGACIÓN</span>
+                            <span class="hide-menu">INICIO</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Home" asp-action="Index" aria-expanded="false">
+                            <a class="sidebar-link" asp-controller="Home" asp-action="Index">
                                 <i class="mdi mdi-home"></i>
-                                <span class="hide-menu">Inicio</span>
+                                <span class="hide-menu">Dashboard</span>
                             </a>
                         </li>
 
-                        <li class="nav-small-cap">
+                        <li class="nav-small-cap mt-2">
                             <i class="mdi mdi-dots-horizontal"></i>
                             <span class="hide-menu">RELACIÓN 1:1</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Usuarios" asp-action="Index" aria-expanded="false">
+                            <a class="sidebar-link" asp-controller="Usuarios" asp-action="Index">
                                 <i class="mdi mdi-account-multiple"></i>
-                                <span class="hide-menu">Usuarios</span>
+                                <span class="hide-menu">Usuarios / Perfil</span>
                             </a>
                         </li>
 
-                        <li class="nav-small-cap">
+                        <li class="nav-small-cap mt-2">
                             <i class="mdi mdi-dots-horizontal"></i>
                             <span class="hide-menu">RELACIÓN 1:N</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Clientes" asp-action="Index" aria-expanded="false">
+                            <a class="sidebar-link" asp-controller="Clientes" asp-action="Index">
                                 <i class="mdi mdi-account-card-details"></i>
                                 <span class="hide-menu">Clientes</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Pedidos" asp-action="Index" aria-expanded="false">
+                            <a class="sidebar-link" asp-controller="Pedidos" asp-action="Index">
                                 <i class="mdi mdi-cart"></i>
                                 <span class="hide-menu">Pedidos</span>
                             </a>
                         </li>
 
-                        <li class="nav-small-cap">
+                        <li class="nav-small-cap mt-2">
                             <i class="mdi mdi-dots-horizontal"></i>
                             <span class="hide-menu">RELACIÓN N:M</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Estudiantes" asp-action="Index" aria-expanded="false">
+                            <a class="sidebar-link" asp-controller="Estudiantes" asp-action="Index">
                                 <i class="mdi mdi-school"></i>
                                 <span class="hide-menu">Estudiantes</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark" asp-controller="Cursos" asp-action="Index" aria-expanded="false">
+                            <a class="sidebar-link" asp-controller="Cursos" asp-action="Index">
                                 <i class="mdi mdi-book-open-page-variant"></i>
                                 <span class="hide-menu">Cursos</span>
                             </a>
@@ -157,9 +149,7 @@
             </div>
         </aside>
 
-        <!-- ============================================================== -->
-        <!-- Page wrapper -->
-        <!-- ============================================================== -->
+        <!-- ========== PAGE WRAPPER ========== -->
         <div class="page-wrapper">
             <!-- Breadcrumb -->
             <div class="page-breadcrumb">
@@ -174,7 +164,7 @@
                                     <li class="breadcrumb-item">
                                         <a asp-controller="Home" asp-action="Index">Inicio</a>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
                                 </ol>
                             </nav>
                         </div>
@@ -182,33 +172,56 @@
                 </div>
             </div>
 
-            <!-- Container fluid -->
+            <!-- Page Content -->
             <div class="container-fluid">
                 @RenderBody()
             </div>
 
-            <!-- Footer -->
-            <footer class="footer text-center">
-                Proyecto 2 &copy; @DateTime.Now.Year — CRUD con Relaciones Avanzadas EF Core
+            <footer class="footer">
+                Proyecto 2 &copy; @DateTime.Now.Year — CRUD con Relaciones Avanzadas · Entity Framework Core
             </footer>
         </div>
-        <!-- End Page wrapper -->
-    </div>
-    <!-- End Main wrapper -->
 
-    <!-- ============================================================== -->
-    <!-- Scripts -->
-    <!-- ============================================================== -->
-    <script src="~/nice-admin/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/nice-admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
-    <script src="~/nice-admin/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/nice-admin/dist/js/app.min.js"></script>
-    <script src="~/nice-admin/dist/js/app.init.js"></script>
-    <script src="~/nice-admin/dist/js/app-style-switcher.js"></script>
-    <script src="~/nice-admin/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-    <script src="~/nice-admin/dist/js/waves.js"></script>
-    <script src="~/nice-admin/dist/js/sidebarmenu.js"></script>
-    <script src="~/nice-admin/dist/js/custom.min.js"></script>
+    </div><!-- end #main-wrapper -->
+
+    <!-- Scripts via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        // Hide preloader
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                document.getElementById('preloader').style.display = 'none';
+            }, 300);
+        });
+
+        // Sidebar toggle
+        document.getElementById('sidebar-toggle')?.addEventListener('click', function () {
+            var wrapper = document.getElementById('main-wrapper');
+            if (wrapper.getAttribute('data-sidebartype') === 'full') {
+                wrapper.setAttribute('data-sidebartype', 'mini-sidebar');
+            } else {
+                wrapper.setAttribute('data-sidebartype', 'full');
+            }
+        });
+
+        // Mobile sidebar
+        document.getElementById('mobile-sidebar-toggle')?.addEventListener('click', function () {
+            document.getElementById('left-sidebar').classList.toggle('shown');
+        });
+
+        // Active link highlighting
+        var currentPath = window.location.pathname.toLowerCase();
+        document.querySelectorAll('.sidebar-link').forEach(function (link) {
+            var href = link.getAttribute('href');
+            if (href && currentPath.includes(href.split('/')[1]?.toLowerCase())) {
+                link.parentElement.classList.add('active');
+            }
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
